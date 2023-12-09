@@ -49,7 +49,7 @@ export class ProductController {
     }
 
     const total = +(await query.clone().count().first())['count(*)'];
-    const perPage = 2;
+    const perPage = 100;
     const maxPage = Math.ceil(total / perPage);
     const currentPage = +page || 1;
 
