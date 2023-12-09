@@ -1,16 +1,24 @@
 import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
 
 export class UpdateProductDto {
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'Nazwa produktu jest wymagana',
+  })
   @IsString()
   name: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'Cena jest wymagana',
+  })
   @IsInt()
-  @Min(0)
+  @Min(1, {
+    message: 'Cena musi być większa niż 0',
+  })
   price: number;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'Opis jest wymagany',
+  })
   @IsString()
   description: string;
 }
