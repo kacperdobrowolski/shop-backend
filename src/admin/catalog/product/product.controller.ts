@@ -19,13 +19,19 @@ export class ProductController {
       name,
       price,
       description,
+      image,
+      attributeValueIds,
+      categoryIds,
     }: CreateProductDto,
   ): Promise<void> {
-    await this.productService.createProduct(
+    await this.productService.createProduct({
       name,
       price,
       description,
-    );
+      image,
+      attributeValueIds,
+      categoryIds,
+    });
   }
 
   @Delete(':id')
@@ -64,6 +70,7 @@ export class ProductController {
         name: product.name,
         price: product.price,
         description: product.description,
+        image: product.image,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       })),
@@ -84,13 +91,19 @@ export class ProductController {
       name,
       price,
       description,
+      image,
+      attributeValueIds,
+      categoryIds,
     }: UpdateProductDto,
   ): Promise<void> {
-    await this.productService.updateProduct(
+    await this.productService.updateProduct({
       id,
       name,
       price,
       description,
-    );
+      image,
+      attributeValueIds,
+      categoryIds,
+    });
   }
 }
