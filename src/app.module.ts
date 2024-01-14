@@ -7,6 +7,7 @@ import { KnexModule } from 'nestjs-knex';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
+import { UserSettingModule } from './user-setting/user-setting.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AdminModule } from './admin/admin.module';
     UserModule,
     AuthModule,
     AdminModule,
+    UserSettingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
