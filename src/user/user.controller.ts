@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, ConflictException, Controller, NotFoundException, Patch, Post } from '@nestjs/common';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { UserService } from './user.service';
 import { UserAlreadyExistException } from './exceptions/user-already-exist.exception';

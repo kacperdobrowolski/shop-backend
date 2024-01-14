@@ -10,7 +10,7 @@ export class UserRepository {
     @InjectKnex() private readonly db: Knex,
   ) {}
 
-  async create(user: Partial<IUser>): Promise<void> {
+  async create(user: Omit<IUser, 'id'>): Promise<void> {
     try {
       await this.db('user_users')
         .insert({
