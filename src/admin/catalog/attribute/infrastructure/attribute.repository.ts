@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
 import { InjectKnex } from 'nestjs-knex';
 import { AttributeAlreadyExistException } from '../exceptions/attribute-already-exist.exception';
+import { IAttribute } from '../interfaces/attribute.interface';
 
 @Injectable()
 export class AttributeRepository {
@@ -22,9 +23,9 @@ export class AttributeRepository {
     }
   }
 
-  async findOneById(id: number): Promise<{ id: number }> {
+  async findOneById(id: number): Promise<IAttribute> {
     return await this.db('catalog_attributes')
-      .select('id')
+      .select('id', 'name')
       .where('id', id)
       .first();
   }
@@ -33,5 +34,11 @@ export class AttributeRepository {
     await this.db('catalog_attributes')
       .where('id', attributeId)
       .del();
+  }
+
+  async persist(attribute: IAttribute): Promise<void> {
+    await this.db('catalog_attributes')
+      .where('id', attribute.id)
+      .update({ name: attribute.name });
   }
 }

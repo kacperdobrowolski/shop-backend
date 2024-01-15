@@ -1,10 +1,13 @@
-import { Body, ConflictException, Controller, Delete, NotFoundException, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, ConflictException, Controller, Delete, NotFoundException, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { AttributeAlreadyExistException } from './exceptions/attribute-already-exist.exception';
 import { AttributeService } from './attribute.service';
 import { AssignAttributeValueDto } from './dto/assign-attribute-value.dto';
 import { AttributeValueAlreadyExistException } from './exceptions/attribute-value-already-exist.exception';
 import { AttributeNotFoundException } from './exceptions/attribute-not-found.exception';
+import { UpdateAttributeDto } from './dto/update-attribute.dto';
+import { UpdateAttributeValueDto } from './dto/update-attribute-value.dto';
+import { AttributeValueNotFoundException } from './exceptions/attribute-value-not-found.exception';
 
 @Controller('admin/catalog/attribute')
 export class AttributeController {
@@ -66,5 +69,50 @@ export class AttributeController {
       attrId,
       valueId,
     );
+  }
+
+  @Patch(':attrId')
+  async updateAttribute(
+    @Param('attrId', ParseIntPipe) attrId: number,
+    @Body() { name }: UpdateAttributeDto,
+  ): Promise<void> {
+    try {
+      await this.attributeService.updateAttribute({
+        id: attrId,
+        name,
+      });
+    } catch (error) {
+      if (error.constructor === AttributeNotFoundException) {
+        throw new NotFoundException('Nie ma takiego atrybutu');
+      }
+
+      throw error;
+    }
+  }
+
+  @Patch(':attrId/:valueId')
+  async updateAttributeValue(
+    @Param('attrId', ParseIntPipe) attrId: number,
+    @Param('valueId', ParseIntPipe) valueId: number,
+    @Body() { value }: UpdateAttributeValueDto,
+  ): Promise<void> {
+    try {
+      await this.attributeService.updateAttributeValue(
+        attrId,
+        valueId,
+        value,
+      );
+    } catch (error) {
+      switch (error.constructor) {
+        case AttributeNotFoundException:
+          throw new NotFoundException('Nie ma takiego atrybutu');
+
+        case AttributeValueNotFoundException:
+          throw new NotFoundException('Nie ma takiej wartości atrybutu');
+
+        default:
+          throw error;
+      }
+    }
   }
 }
